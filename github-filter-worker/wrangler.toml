@@ -1,0 +1,7 @@
+name = "github-filter-worker"
+type = "webpack"
+account_id = "502aea548379e08369697540cc0bb0d1"
+workers_dev = true
+route = ""
+zone_id = ""
+webpack_config = "webpack.config.js"
