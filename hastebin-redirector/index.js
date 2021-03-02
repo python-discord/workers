@@ -46,6 +46,6 @@ async function handleRequest(request) {
     return await fetch(url, request);
   }
 
-  // If we get here we should redirect to the Pytho highlighted version of the document.
-  return Response.redirect(`${url.origin}/${match.groups.code}.py`, 307)
+  // If we get here we should redirect to the Python highlighted version of the document.
+  return Response.redirect(`${url.origin}/${match.groups.code}.py`, 301)
 }
