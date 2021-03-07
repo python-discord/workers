@@ -19,7 +19,7 @@ export async function handleRequest(request: Request): Promise<Response> {
   let isCoveralls = json.sender?.login?.indexOf("coveralls") !== -1;
   let isGitHubBot = json.sender?.login?.indexOf('[bot]') !== -1;
   let isDependabotBranchDelete = json.ref?.indexOf("dependabot") !== -1 && request.headers.get("X-GitHub-Event") === "delete";
-  let isBotPRApprove = json.pull_request?.user?.indexOf("[bot]") !== -1 && request.headers.get("X-GitHub-Event") === "pull_request_review";
+  let isBotPRApprove = json.pull_request?.user?.login?.indexOf("[bot]") !== -1 && request.headers.get("X-GitHub-Event") === "pull_request_review";
 
   // Combine logic.
   let botPayload = isCoveralls || isGitHubBot || isDependabotBranchDelete || isBotPRApprove;
