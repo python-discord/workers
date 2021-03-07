@@ -46,5 +46,5 @@ export async function handleRequest(request: Request): Promise<Response> {
   }
 
   // Ignore any bot payload.
-  return new Response(`Ignored by github-filter-worker`)
+  return new Response(`Ignored by github-filter-worker`, {status: 203})
 }
