@@ -3,9 +3,13 @@ addEventListener('fetch', (event) => {
 })
 
 async function handle(event: FetchEvent) {
-  let url = new URL(event.request.url);
+  let path = new URL(event.request.url).pathname.slice(1);
 
-  let redirect = await urls.get(url.pathname.slice(1));
+  if (!path) {
+    return await fetch(event.request.url, event.request);
+  }
+
+  let redirect = await urls.get(path);
 
   if (redirect) {
     return Response.redirect(redirect, 302);
