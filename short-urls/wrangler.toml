@@ -1,0 +1,10 @@
+name = "short-urls"
+type = "webpack"
+account_id = "502aea548379e08369697540cc0bb0d1"
+workers_dev = false
+route = "pydis.com/*"
+zone_id = "16c3fbe4faf6e8050413bf61937224bf"
+webpack_config = "webpack.config.js"
+kv_namespaces = [
+	 { binding = "urls", id = "c6d38750203b40e89579731430d22429" }
+]
