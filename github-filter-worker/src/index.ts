@@ -21,11 +21,16 @@ export async function handleRequest(request: Request): Promise<Response> {
   let isDependabotBranchDelete = json.ref?.indexOf("dependabot") !== -1 && request.headers.get("X-GitHub-Event") === "delete";
   let isBotPRApprove = json.pull_request?.user?.login?.indexOf("[bot]") !== -1 && request.headers.get("X-GitHub-Event") === "pull_request_review";
 
+  let isEmptyReview = json.review?.state === "commented" && request.headers.get("X-GitHub-Event") === "pull_request_review";
+
   // Combine logic.
   let botPayload = isCoveralls || isGitHubBot || isDependabotBranchDelete || isBotPRApprove;
+  let noisyUserActions = isEmptyReview;
+
+  let shouldIgnore = botPayload || noisyUserActions;
 
   // If payload is not from a bot.
-  if (!botPayload) {
+  if (!shouldIgnore) {
     // Create a new URL object to break out the
     let url = new URL(request.url)
 
