@@ -1,3 +1,5 @@
+name: Publish Worker
+
 on:
   workflow_dispatch:
     inputs:
