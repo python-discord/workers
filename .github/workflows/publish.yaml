@@ -1,0 +1,21 @@
+on:
+  workflow_dispatch:
+    inputs:
+      worker:
+        description: 'Choose a worker to deploy (folder name)'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    environment: production
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Publish app
+        uses: cloudflare/wrangler-action@1.2.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          workingDirectory: ${{ github.event.inputs.worker }}
