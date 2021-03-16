@@ -3,7 +3,7 @@ addEventListener('fetch', (event) => {
 })
 
 async function handle(event: FetchEvent) {
-  let path = new URL(event.request.url).pathname.slice(1);
+  let path = new URL(event.request.url).pathname.slice(1).replace(/\//, "");
 
   if (!path) {
     return await fetch(event.request.url, event.request);
