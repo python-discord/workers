@@ -30,6 +30,11 @@ export async function handleRequest(request: Request): Promise<Response> {
   // Clone the request so that when we read JSON we can still forward it on later.
   let json = await request.clone().json();
 
+  request.tracer.addData({
+    githubEvent: request.headers.get("X-GitHub-Event"),
+    sender: json.sender?.login
+  })
+
   // Check if username is like "joe[bot]" or coveralls.
   let isCoveralls = json.sender?.login?.indexOf("coveralls") !== -1;
   let isGitHubBot = json.sender?.login?.indexOf('[bot]') !== -1;
@@ -48,7 +53,7 @@ export async function handleRequest(request: Request): Promise<Response> {
 
   let shouldIgnore = botPayload || noisyUserActions;
 
-  request.tracer.addData({ botPayload, noisyUserActions, shouldIgnore })
+  request.tracer.addData({ botPayload, noisyUserActions, shouldIgnore });
 
   // If payload is not from a bot.
   if (!shouldIgnore) {
