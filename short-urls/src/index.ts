@@ -19,7 +19,7 @@ const listener = hc(hcConfig, event => {
 addEventListener('fetch', listener)
 
 async function handle(request: Request) {
-  let path = new URL(request.url).pathname.slice(1);
+  let path = new URL(request.url).pathname.slice(1).replace(/\//, "");
 
   if (!path) {
     request.tracer.log("No path, forwarding to host.")
