@@ -18,5 +18,8 @@
     "typescript": "^3.9.5",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "@cloudflare/workers-honeycomb-logger": "^0.2.5"
   }
 }
