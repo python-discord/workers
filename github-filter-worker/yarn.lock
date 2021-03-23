@@ -2,10 +2,24 @@
 # yarn lockfile v1
 
 
+"@cloudflare/workers-honeycomb-logger@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-honeycomb-logger/-/workers-honeycomb-logger-0.2.5.tgz#0eadd95cb8dfc0905580e1edb2670d6c017422d6"
+  integrity sha512-pCtvN4xMvmxRZGgGOAyKj6voSrn+aKbnr9rDUqMU3/lW/0wFgNgWMRiM1NAepiBRfyxMis+u9U8dpv9pIeL0VA==
+  dependencies:
+    "@cloudflare/workers-types" "^2.2.1"
+    "@types/uuid" "^8.3.0"
+    uuid "^8.3.2"
+
 "@cloudflare/workers-types@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-2.1.0.tgz#6e4f07567f4c914ad811c2d7a6172d0ae834c7f6"
   integrity sha512-VmXaHTq0lt6Xre4aK1hUK25hjZjuEUkHtdUEt0FJamv+NzQO54Gwp6Zr5Cfu6SP5EQ/tTmTMP/tK9npA8zhcCg==
+
+"@cloudflare/workers-types@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-2.2.1.tgz#a4fd7eda69e54769a5e4fa31b44947e1fe50d323"
+  integrity sha512-gxI3CytBWzdtvQ7tu3I1biYN6QU18OInYKfOL5Twlbs4dRTx4ib5/2FrzwYaPFFfCg5ocy38aG1A/69satjXBQ==
 
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.2"
@@ -42,6 +56,11 @@
   version "14.14.31"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.31.tgz#72286bd33d137aa0d152d47ec7c1762563d34055"
   integrity sha512-vFHy/ezP5qI0rFgJ7aQnjDXwAMrG0KqqIH7tQG5PPv3BWBayOPIQNBjVc/P6hhdZfMx51REc6tfDNXHUio893g==
+
+"@types/uuid@^8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.0.tgz#215c231dff736d5ba92410e6d602050cce7e273f"
+  integrity sha512-eQ9qFW/fhfGJF8WKHGEHZEyVWfZxrT+6CLIJGBcZPfxUh/+BnEj+UCGYMlr9qZuX/2AltsvwrGqp0LhEW8D0zQ==
 
 "@webassemblyjs/ast@1.11.0":
   version "1.11.0"
@@ -961,6 +980,11 @@ util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-compile-cache@^2.2.0:
   version "2.2.0"

@@ -1,7 +1,22 @@
-addEventListener('fetch', (event) => {
-  // On request run our below logic.
+import { Config, hc } from '@cloudflare/workers-honeycomb-logger';
+
+const hcConfig: Config = {
+  apiKey: HONEYCOMB_KEY,
+  dataset: "worker-discord-github-filter",
+  sampleRates: {
+    '2xx': 1,
+    '3xx': 1,
+    '4xx': 1,
+    '5xx': 1,
+    'exception': 1
+  }
+}
+
+const listener = hc(hcConfig, event => {
   event.respondWith(handleRequest(event.request))
 })
+
+addEventListener('fetch', listener)
 
 export async function handleRequest(request: Request): Promise<Response> {
   // Don't apply any logic to non-POSTs.
@@ -33,6 +48,8 @@ export async function handleRequest(request: Request): Promise<Response> {
 
   let shouldIgnore = botPayload || noisyUserActions;
 
+  request.tracer.addData({ botPayload, noisyUserActions, shouldIgnore })
+
   // If payload is not from a bot.
   if (!shouldIgnore) {
     // Create a new URL object to break out the
@@ -42,6 +59,7 @@ export async function handleRequest(request: Request): Promise<Response> {
     if (url.pathname === '/') {
       return new Response(
         'Make sure to specify webhook components like /:id/:token',
+        { status: 400 }
       )
     }
 
