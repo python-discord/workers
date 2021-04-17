@@ -1,0 +1,7 @@
+type = "webpack"
+zone_id = "989c984a358bfcd1e9b9d188cc86c1df"
+account_id = "502aea548379e08369697540cc0bb0d1"
+route = "csp.pythondiscord.com/*"
+workers_dev = false
+webpack_config = "webpack.config.js"
+name = "report-uri"
