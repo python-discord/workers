@@ -11,12 +11,19 @@ const hcConfig: Config = {
     'exception': 1
   }
 }
+const emojiRegex = new RegExp(":([a-zA-Z0-9-_])+?:")
 
 const listener = hc(hcConfig, event => {
   event.respondWith(handleRequest(event.request))
 })
 
 addEventListener('fetch', listener)
+
+// Try to lookup the emoji through the KV namespace, return the name if not found
+async function lookupEmoji(name: string): string {
+  let value = await emojis.get(name)
+  return value === null ? value : name
+}
 
 export async function handleRequest(request: Request): Promise<Response> {
   // Don't apply any logic to non-POSTs.
@@ -73,8 +80,18 @@ export async function handleRequest(request: Request): Promise<Response> {
     // Format for a webhook
     let template = `https://discord.com/api/webhooks/${id}/${token}/github`;
 
+    // Translate emojis to the in-server emoji
+    let new_request = new Request(template, {
+      body: (await request.text()).replace(
+          emojiRegex,
+          function(p1) {return lookupEmoji(p1)}
+      ),
+      headers: request.headers,
+      method: request.method
+    })
+
     // Pass on data to Discord as usual
-    return await fetch(template, request)
+    return await fetch(template, new_request)
   }
 
   // Ignore any bot payload.
