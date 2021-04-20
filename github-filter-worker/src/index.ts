@@ -20,9 +20,9 @@ const listener = hc(hcConfig, event => {
 addEventListener('fetch', listener)
 
 // Try to lookup the emoji through the KV namespace, return the name if not found
-async function lookupEmoji(name: string): string {
+async function lookupEmoji(name: string): Promise<string> {
   let value = await EMOJIS.get(name)
-  return value ? value : name
+  return value ? value : `:${name}:`
 }
 
 export async function handleRequest(request: Request): Promise<Response> {
@@ -81,10 +81,16 @@ export async function handleRequest(request: Request): Promise<Response> {
     let template = `https://discord.com/api/webhooks/${id}/${token}/github`;
 
     // Translate emojis to the in-server emoji
+    let promises: any[] = [];
+    (await request.text()).match(emojiRegex)?.forEach (
+        (match) => {promises.push(lookupEmoji(match))}
+        )
+    let emojis: string[] = await Promise.all(promises)
+
     let new_request = new Request(template, {
       body: (await request.text()).replace(
           emojiRegex,
-          (match) => {return lookupEmoji(match)}
+          () => {return emojis.shift()}
       ),
       headers: request.headers,
       method: request.method
