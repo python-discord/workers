@@ -11,7 +11,7 @@ const hcConfig: Config = {
     'exception': 1
   }
 }
-const emojiRegex = /:([a-zA-Z0-9-_])+?:/g
+const emojiRegex = /(?<!\\):([a-zA-Z0-9-_])+?:/g
 
 const listener = hc(hcConfig, event => {
   event.respondWith(handleRequest(event.request))
