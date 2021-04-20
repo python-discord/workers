@@ -21,7 +21,7 @@ addEventListener('fetch', listener)
 
 // Try to lookup the emoji through the KV namespace, return the name if not found
 async function lookupEmoji(name: string): string {
-  let value = await emojis.get(name)
+  let value = await EMOJIS.get(name)
   return value === null ? value : name
 }
 

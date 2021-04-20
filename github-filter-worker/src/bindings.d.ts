@@ -1,5 +1,5 @@
 declare global {
-    const emojis: KVNamespace
+    const EMOJIS: KVNamespace
     const HONEYCOMB_KEY: string
 }
 
