@@ -5,6 +5,4 @@ workers_dev = true
 route = ""
 zone_id = ""
 webpack_config = "webpack.config.js"
-kv_namespaces = [
-  { binding = "EMOJIS", id = "183f1ae82b8d458f983e39eb2c99fa9a", preview_id = "183f1ae82b8d458f983e39eb2c99fa9a" }
-]
+vars = { SHIPIT_EMOTE = "<:shipit:826492371813400637>" }

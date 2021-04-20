@@ -1,5 +1,5 @@
 declare global {
-    const EMOJIS: KVNamespace
+    const SHIPIT_EMOTE: string
     const HONEYCOMB_KEY: string
 }
 

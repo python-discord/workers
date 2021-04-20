@@ -11,19 +11,12 @@ const hcConfig: Config = {
     'exception': 1
   }
 }
-const emojiRegex = /(?<!\\):([a-zA-Z0-9-_])+?:/g
 
 const listener = hc(hcConfig, event => {
   event.respondWith(handleRequest(event.request))
 })
 
 addEventListener('fetch', listener)
-
-// Try to lookup the emoji through the KV namespace, return the name if not found
-async function lookupEmoji(name: string): Promise<string> {
-  let value = await EMOJIS.get(name)
-  return value ? value : `:${name}:`
-}
 
 export async function handleRequest(request: Request): Promise<Response> {
   // Don't apply any logic to non-POSTs.
@@ -78,22 +71,10 @@ export async function handleRequest(request: Request): Promise<Response> {
     let [, id, token] = url.pathname.split('/')
 
     // Format for a webhook
-    let template = `https://discord.com/api/webhooks/${id}/${token}/github`;
-
-    let requestText = await request.text();
-
-    // Translate emojis to the in-server emoji
-    let promises: any[] = [];
-    requestText.match(emojiRegex)?.forEach (
-        (match) => {promises.push(lookupEmoji(match))}
-        )
-    let emojis: string[] = await Promise.all(promises)
+    let template = `https://discord.com/api/webhooks/${id}/${token}/github?wait=1`;
 
     let new_request = new Request(template, {
-      body: requestText.replace(
-          emojiRegex,
-          () => {return emojis.shift()!}
-      ),
+      body: (await request.text()).replaceAll(":shipit:", SHIPIT_EMOTE),
       headers: request.headers,
       method: request.method
     })
