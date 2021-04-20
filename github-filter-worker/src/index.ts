@@ -80,17 +80,19 @@ export async function handleRequest(request: Request): Promise<Response> {
     // Format for a webhook
     let template = `https://discord.com/api/webhooks/${id}/${token}/github`;
 
+    let requestText = await request.text();
+
     // Translate emojis to the in-server emoji
     let promises: any[] = [];
-    (await request.text()).match(emojiRegex)?.forEach (
+    requestText.match(emojiRegex)?.forEach (
         (match) => {promises.push(lookupEmoji(match))}
         )
     let emojis: string[] = await Promise.all(promises)
 
     let new_request = new Request(template, {
-      body: (await request.text()).replace(
+      body: requestText.replace(
           emojiRegex,
-          () => {return emojis.shift()}
+          () => {return emojis.shift()!}
       ),
       headers: request.headers,
       method: request.method
