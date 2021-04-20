@@ -5,3 +5,4 @@ workers_dev = true
 route = ""
 zone_id = ""
 webpack_config = "webpack.config.js"
+vars = { SHIPIT_EMOTE = "<:shipit:826492371813400637>" }

@@ -71,10 +71,16 @@ export async function handleRequest(request: Request): Promise<Response> {
     let [, id, token] = url.pathname.split('/')
 
     // Format for a webhook
-    let template = `https://discord.com/api/webhooks/${id}/${token}/github`;
+    let template = `https://discord.com/api/webhooks/${id}/${token}/github?wait=1`;
+
+    let new_request = new Request(template, {
+      body: (await request.text()).replaceAll(":shipit:", SHIPIT_EMOTE),
+      headers: request.headers,
+      method: request.method
+    })
 
     // Pass on data to Discord as usual
-    return await fetch(template, request)
+    return await fetch(template, new_request)
   }
 
   // Ignore any bot payload.
