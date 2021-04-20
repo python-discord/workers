@@ -11,7 +11,7 @@ const hcConfig: Config = {
     'exception': 1
   }
 }
-const emojiRegex = new RegExp(":([a-zA-Z0-9-_])+?:")
+const emojiRegex = /:([a-zA-Z0-9-_])+?:/g
 
 const listener = hc(hcConfig, event => {
   event.respondWith(handleRequest(event.request))
@@ -22,7 +22,7 @@ addEventListener('fetch', listener)
 // Try to lookup the emoji through the KV namespace, return the name if not found
 async function lookupEmoji(name: string): string {
   let value = await EMOJIS.get(name)
-  return value === null ? value : name
+  return value ? value : name
 }
 
 export async function handleRequest(request: Request): Promise<Response> {
@@ -84,7 +84,7 @@ export async function handleRequest(request: Request): Promise<Response> {
     let new_request = new Request(template, {
       body: (await request.text()).replace(
           emojiRegex,
-          function(p1) {return lookupEmoji(p1)}
+          (match) => {return lookupEmoji(match)}
       ),
       headers: request.headers,
       method: request.method
