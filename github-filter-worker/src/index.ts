@@ -12,6 +12,8 @@ const hcConfig: Config = {
   }
 }
 
+const SHIPIT_EMOTE = "<:shipit:826492371813400637>"
+
 const listener = hc(hcConfig, event => {
   event.respondWith(handleRequest(event.request))
 })
