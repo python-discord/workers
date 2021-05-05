@@ -4,9 +4,9 @@ const hcConfig: Config = {
   apiKey: HONEYCOMB_KEY,
   dataset: "worker-discord-github-filter",
   sampleRates: {
-    '2xx': 1,
-    '3xx': 1,
-    '4xx': 1,
+    '2xx': 20,
+    '3xx': 20,
+    '4xx': 5,
     '5xx': 1,
     'exception': 1
   }
