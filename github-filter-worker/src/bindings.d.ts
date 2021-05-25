@@ -1,5 +1,5 @@
 declare global {
-    const HONEYCOMB_KEY: string
+  const HONEYCOMB_KEY: string
 }
 
-export {};
+export {}
