@@ -83,21 +83,84 @@ export async function handleRequest(request: Request): Promise<Response> {
       )
     }
 
-    let [, id, token] = url.pathname.split('/')
-
-    // Format for a webhook
-    let template = `https://discord.com/api/webhooks/${id}/${token}/github?wait=1`
-
-    let new_request = new Request(template, {
-      body: (await request.text()).replaceAll(':shipit:', SHIPIT_EMOTE),
+    const data: Data = {
+      body: await request.text(),
       headers: request.headers,
       method: request.method,
-    })
+    }
 
-    // Pass on data to Discord as usual
-    return await fetch(template, new_request)
+    let [, id, token] = url.pathname.split('/')
+    const resp = await sendWebhook(id, token, data)
+
+    // Send data to any extra label webhooks
+    let extraChannels = json.issue?.labels?.map(
+      async (label: { [key: string]: string }) => {
+        let result = await sendLabelWebhook(label.name, data)
+
+        if (result) {
+          return result
+        } else {
+          request.tracer.log(`Sent extra webhook to ${label.name}'s channel.`)
+        }
+      },
+    )
+
+    if (extraChannels && extraChannels.length) {
+      // Look for any failed hooks.
+      extraChannels = await Promise.all(extraChannels)
+      const response = extraChannels.reduce(
+        (result: Response | void, item: Response | void) => result || item,
+      )
+
+      if (response) return response
+    }
+
+    return resp
   }
 
   // Ignore any bot payload.
   return new Response(`Ignored by github-filter-worker`, { status: 203 })
+}
+
+interface Data {
+  body: string
+  headers: HeadersInit
+  method: string
+}
+
+async function sendLabelWebhook(
+  label: string,
+  data: Data,
+): Promise<Response | void> {
+  let channel = await labels.get(label)
+
+  if (channel) {
+    let id, token
+
+    try {
+      ;[id, token] = channel.split('/')
+    } catch {
+      return new Response(
+        `Could not parse label webhook channel ${channel}. ` +
+          `Make sure it's of the format /:id/:token.`,
+        { status: 400 },
+      )
+    }
+
+    await sendWebhook(id, token, data)
+  }
+}
+
+async function sendWebhook(id: string, token: string, data: Data) {
+  // Format for a webhook
+  let template = `https://discord.com/api/webhooks/${id}/${token}/github?wait=1`
+
+  let new_request = new Request(template, {
+    body: data.body.replaceAll(':shipit:', SHIPIT_EMOTE),
+    headers: data.headers,
+    method: data.method,
+  })
+
+  // Pass on data to Discord as usual
+  return await fetch(template, new_request)
 }

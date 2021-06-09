@@ -19,3 +19,5 @@ After you've authorised, you can make modifications to the worker and run `wrang
 Once the worker is active on a domain simply add a GitHub webhook pointing to `https://example.com/{webhook_id}/{webhook_token}`.
 
 All events will be proxied to that hook (providing they don't come from a bot).
+
+To forward data to extra webhooks based on labels, create an entry in the KV namespace `labels` in the format: `<LABEL_NAME>: <:id/:token>`.

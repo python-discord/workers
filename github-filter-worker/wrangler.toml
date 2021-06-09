@@ -6,3 +6,6 @@ route = ""
 zone_id = ""
 webpack_config = "webpack.config.js"
 vars = { SHIPIT_EMOTE = "<:shipit:826492371813400637>" }
+kv_namespaces = [
+    { binding = "labels", id = "" }
+]
