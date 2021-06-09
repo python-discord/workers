@@ -93,7 +93,7 @@ export async function handleRequest(request: Request): Promise<Response> {
     const resp = await sendWebhook(id, token, data)
 
     // Send data to any extra label webhooks
-    let extraChannels = json.issue?.labels?.map(
+    let extraChannels = (json.issue || json.pull_request)?.labels?.map(
       async (label: { [key: string]: string }) => {
         let result = await sendLabelWebhook(label.name, data)
 
