@@ -138,7 +138,7 @@ async function sendLabelWebhook(
     let id, token
 
     try {
-      ;[id, token] = channel.split('/')
+      [id, token] = channel.split('/');
     } catch {
       return new Response(
         `Could not parse label webhook channel ${channel}. ` +
