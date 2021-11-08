@@ -18,21 +18,32 @@ const listener = hc(hcConfig, (event: Event) => {
 
 addEventListener('fetch', listener)
 
-function parseURL(url: string): string {
-  const index = url.indexOf('/')
-  if (index === -1) {
-    throw Error('InputError')
+/**
+ * Try and get a URL from the request body.
+ * Any error produced by this function are meant for the end user.
+ *
+ * @param request The POST request received in event.
+ */
+async function parseURL(request: Request): Promise<string> {
+  // Try to read the body of the request
+  let body
+  try {
+    body = JSON.parse(await request.text())
+  } catch (error) {
+    throw new Error(`Could not parse body, error: ${error.message}`)
   }
 
-  let new_url = url.substr(index + 1)
-
-  if (new_url.startsWith('http:/') || new_url.startsWith('https:/')) {
-    new_url = new_url.replace(':/', '://')
-  } else {
-    new_url = 'https://' + new_url
+  // Validate input
+  let url = body['url']
+  if (url === undefined) {
+    throw new Error('Invalid input, `url` key not found in body.')
   }
 
-  return new_url
+  if (!(url.startsWith('http://') || url.startsWith('https://'))) {
+    url = 'https://' + url
+  }
+
+  return url
 }
 
 export async function handleRequest(request: Request): Promise<Response> {
@@ -40,37 +51,22 @@ export async function handleRequest(request: Request): Promise<Response> {
     return new Response('Ignoring non-POST request.')
   }
 
-  // Create a new URL object to break out the
-  const url = new URL(request.url)
-  let new_url
-
+  let url
   try {
-    // Check for invalid config.
-    if (url.pathname === '/') {
-      throw Error('InputError')
-    }
-
-    new_url = parseURL(url.pathname)
+    url = await parseURL(request)
   } catch (error) {
-    if (error.message === 'InputError') {
-      return new Response('Make sure to specify the url to unfurl like /:url', {
-        status: 400,
-      })
-    }
-
-    throw error
+    return new Response(error.message, { status: 400 })
   }
 
-  request.tracer.addData({ url: new_url })
+  request.tracer.addData({ url: url })
 
   let new_request
   try {
-    new_request = await request.tracer.fetch(new_url)
+    new_request = await request.tracer.fetch(url)
   } catch (error) {
     if (error.message.startsWith('Fetch API cannot load')) {
       return new Response('Could not unfurl this URL.', { status: 400 })
     }
-
     throw error
   }
 
