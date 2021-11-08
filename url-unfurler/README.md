@@ -14,7 +14,7 @@ After you've authorised, you can make modifications to the worker and run `wrang
 
 ## Usage
 
-You can utilize this worker by making a GET request to `https://example.com/{redirect_url}`.
+You can utilize this worker by making a POST request to `https://example.com/{redirect_url}`.
 
 The worker will try to unfurl nested redirects as far as it can, but it may timeout before it reaches the end.
 In those cases, you should be prepared to handle errors. The worker may also throw other errors on invalid input.

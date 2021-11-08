@@ -36,8 +36,8 @@ function parseURL(url: string): string {
 }
 
 export async function handleRequest(request: Request): Promise<Response> {
-  if (request.method !== 'GET') {
-    return new Response('Ignoring non-GET request.')
+  if (request.method !== 'POST') {
+    return new Response('Ignoring non-POST request.')
   }
 
   // Create a new URL object to break out the
