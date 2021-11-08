@@ -1,5 +1,7 @@
 import { Config, hc } from '@cloudflare/workers-honeycomb-logger'
 
+const DEFAULT_MAX_REDIRECTS = 6
+
 const hcConfig: Config = {
   apiKey: HONEYCOMB_KEY,
   dataset: 'worker-url-unfurler',
@@ -19,17 +21,20 @@ const listener = hc(hcConfig, (event: Event) => {
 addEventListener('fetch', listener)
 
 /**
- * Try and get a URL from the request body.
- * Any error produced by this function are meant for the end user.
+ * Try and get input from the request body.
+ * Any errors produced by this function are meant for the end user.
  *
  * @param request The POST request received in event.
+ * @return [string, number] An array of the URL and depth limit.
  */
-async function parseURL(request: Request): Promise<string> {
+async function parseInput(request: Request): Promise<[string, number]> {
   // Try to read the body of the request
   let body
   try {
     body = JSON.parse(await request.text())
-  } catch (error) {
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     throw new Error(`Could not parse body, error: ${error.message}`)
   }
 
@@ -43,7 +48,127 @@ async function parseURL(request: Request): Promise<string> {
     url = 'https://' + url
   }
 
-  return url
+  let max_depth = body['max-depth']
+  if (max_depth === undefined) {
+    max_depth = DEFAULT_MAX_REDIRECTS
+  }
+
+  const _max_depth = Number.parseInt(max_depth)
+  if (isNaN(_max_depth)) {
+    throw new Error(
+      `Invalid input \`max-depth: ${max_depth}\` could not be parsed as a number.`,
+    )
+  }
+
+  return [url, _max_depth]
+}
+
+/**
+ * Unfurl a URL, as far as necessary.
+ *
+ * @param tracer The HoneyComb tracer from the request.
+ * @param url The URL to unfurl.
+ * @param max_depth How far to go before giving up.
+ */
+async function unfurl(
+  { tracer }: Request,
+  url: string,
+  max_depth: number,
+): Promise<[number, string?, Response?]> {
+  let previous = undefined
+  let next = url
+  let new_request
+
+  let depth = 0
+  let location
+
+  while (previous !== next) {
+    // Get the next request in the chain
+    try {
+      new_request = await tracer.fetch(next, { redirect: 'manual' })
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      if (e.message.startsWith('Fetch API cannot load')) {
+        return [
+          depth,
+          undefined,
+          new Response(
+            JSON.stringify({ error: 'Could not unfurl this URL.' }),
+            { status: 400 },
+          ),
+        ]
+      } else if (e.message.startsWith('Too many subrequests')) {
+        tracer.log('Hit max depth allowed without resolving.')
+        tracer.addData({
+          final_url: previous,
+          next_url: next,
+          depth: depth + 1,
+        })
+
+        return [
+          depth,
+          undefined,
+          new Response(
+            JSON.stringify({
+              error:
+                'Reached the max depth allowable for subrequests without resolving.',
+              depth: depth,
+              final: previous,
+              next: next,
+            }),
+            { status: 416 },
+          ),
+        ]
+      }
+
+      throw e
+    }
+
+    if (![301, 302].includes(new_request.status)) {
+      // We've reached the bottom
+      break
+    }
+
+    location = new_request.headers.get('location')
+    if (location === undefined || location === null) {
+      // No clear way to proceed, exit early
+      tracer.log('Received a redirect without a location header.')
+      return [
+        depth,
+        undefined,
+        new Response(
+          JSON.stringify({
+            error:
+              'Reached an uncertain conclusion, since no location header was set.',
+          }),
+          { status: 418 },
+        ),
+      ]
+    }
+
+    previous = next
+    next = location
+    depth++
+
+    if (depth > max_depth) {
+      return [
+        depth,
+        undefined,
+        new Response(
+          JSON.stringify({
+            error: 'Reached the max depth defined without resolving.',
+            depth: depth - 1,
+            final: previous,
+            next: next,
+          }),
+          { status: 416 },
+        ),
+      ]
+    }
+  }
+
+  return [depth, next, undefined]
 }
 
 export async function handleRequest(request: Request): Promise<Response> {
@@ -51,24 +176,24 @@ export async function handleRequest(request: Request): Promise<Response> {
     return new Response('Ignoring non-POST request.')
   }
 
-  let url
+  let url, max_depth
   try {
-    url = await parseURL(request)
-  } catch (error) {
-    return new Response(error.message, { status: 400 })
+    ;[url, max_depth] = await parseInput(request)
+
+    // eslint-disable-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+    })
   }
 
-  request.tracer.addData({ url: url })
+  request.tracer.addData({ original_url: url, max_depth: max_depth })
 
-  let new_request
-  try {
-    new_request = await request.tracer.fetch(url)
-  } catch (error) {
-    if (error.message.startsWith('Fetch API cannot load')) {
-      return new Response('Could not unfurl this URL.', { status: 400 })
-    }
-    throw error
+  const [depth, new_url, response] = await unfurl(request, url, max_depth)
+  if (response !== undefined) {
+    return response
   }
 
-  return new Response(JSON.stringify({ destination: new_request.url }))
+  request.tracer.addData({ destination_url: new_url, actual_depth: depth })
+  return new Response(JSON.stringify({ destination: new_url, depth: depth }))
 }
