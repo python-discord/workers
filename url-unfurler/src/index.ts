@@ -2,6 +2,10 @@ import { Config, hc } from '@cloudflare/workers-honeycomb-logger'
 
 const DEFAULT_MAX_REDIRECTS = 6
 
+const JSON_HEADERS: HeadersInit = {
+  'Content-Type': 'application/json',
+}
+
 const hcConfig: Config = {
   apiKey: HONEYCOMB_KEY,
   dataset: 'worker-url-unfurler',
@@ -95,7 +99,7 @@ async function unfurl(
           undefined,
           new Response(
             JSON.stringify({ error: 'Could not unfurl this URL.' }),
-            { status: 400 },
+            { status: 400, headers: JSON_HEADERS },
           ),
         ]
       } else if (e.message.startsWith('Too many subrequests')) {
@@ -117,7 +121,7 @@ async function unfurl(
               final: previous,
               next: next,
             }),
-            { status: 416 },
+            { status: 416, headers: JSON_HEADERS },
           ),
         ]
       }
@@ -144,7 +148,7 @@ async function unfurl(
             depth: depth,
             final: previous,
           }),
-          { status: 418 },
+          { status: 418, headers: JSON_HEADERS },
         ),
       ]
     }
@@ -164,7 +168,7 @@ async function unfurl(
             final: previous,
             next: next,
           }),
-          { status: 416 },
+          { status: 416, headers: JSON_HEADERS },
         ),
       ]
     }
@@ -186,6 +190,7 @@ export async function handleRequest(request: Request): Promise<Response> {
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 400,
+      headers: JSON_HEADERS,
     })
   }
 
@@ -197,5 +202,7 @@ export async function handleRequest(request: Request): Promise<Response> {
   }
 
   request.tracer.addData({ destination_url: new_url, actual_depth: depth })
-  return new Response(JSON.stringify({ destination: new_url, depth: depth }))
+  return new Response(JSON.stringify({ destination: new_url, depth: depth }), {
+    headers: JSON_HEADERS,
+  })
 }
