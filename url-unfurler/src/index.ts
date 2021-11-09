@@ -141,6 +141,8 @@ async function unfurl(
           JSON.stringify({
             error:
               'Reached an uncertain conclusion, since no location header was set.',
+            depth: depth,
+            final: previous,
           }),
           { status: 418 },
         ),
@@ -180,7 +182,7 @@ export async function handleRequest(request: Request): Promise<Response> {
   try {
     ;[url, max_depth] = await parseInput(request)
 
-    // eslint-disable-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 400,

@@ -90,3 +90,12 @@ no browser will follow the redirect, and the link will be broken.
 
 This sort of thing is either the work of a bug in the redirection,
 or a computer scientist looking to prove a point. Either way, you should panic!
+
+Expect the following JSON response body:
+```JSON
+{
+  "error": "Details about the error.",
+  "depth": "int. Current depth at time of failure",
+  "final": "The URL which returned the missing location header."
+}
+```
