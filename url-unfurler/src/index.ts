@@ -125,7 +125,7 @@ async function unfurl(
       throw e
     }
 
-    if (![301, 302].includes(new_request.status)) {
+    if (![301, 302, 307, 308].includes(new_request.status)) {
       // We've reached the bottom
       break
     }
