@@ -6,7 +6,7 @@ This is particularly useful when relaying embeds to Discord when the embed sizes
 
 This tool is built at the moment only to handle Discord webhooks.
 
-## Deployment
+## Deployment
 
 You need to install `wrangler` with `npm install -g @cloudflare/wrangler`.
 
