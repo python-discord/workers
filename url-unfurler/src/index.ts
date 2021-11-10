@@ -153,6 +153,12 @@ async function unfurl(
       ]
     }
 
+    if (!(location.startsWith('http://') || location.startsWith('https://'))) {
+      // Relative redirect
+      const { protocol, hostname } = new URL(next)
+      location = protocol + '//' + hostname + location
+    }
+
     previous = next
     next = location
     depth++
