@@ -97,10 +97,10 @@ async function unfurl(
         return [
           depth,
           undefined,
-          new Response(
-            JSON.stringify({ error: 'Could not unfurl this URL.' }),
-            { status: 400, headers: JSON_HEADERS },
-          ),
+          new Response(JSON.stringify({ error: 'Fetch request failed.' }), {
+            status: 400,
+            headers: JSON_HEADERS,
+          }),
         ]
       } else if (e.message.startsWith('Too many subrequests')) {
         tracer.log('Hit max depth allowed without resolving.')
