@@ -146,7 +146,7 @@ async function unfurl(
             error:
               'Reached an uncertain conclusion, since no location header was set.',
             depth: depth,
-            final: previous,
+            final: previous ? previous : url,
           }),
           { status: 418, headers: JSON_HEADERS },
         ),
