@@ -12,8 +12,8 @@ const EXCLUDE_LIST = [
   "/"
 ];
 
-// A regex for anything not ending in .py
-const NON_PY_EXT = /\/(?<code>[a-z]*)(\.(?!py).*)?$/gm;
+// A regex for anything not ending in set of allowed exts
+const ALLOWED_EXTS = /\/(?<code>[a-z]*)(\.(?!py|md|json|csv).*)?$/gm;
 
 // A set of API route such as /raw/abc that should never be redirected.
 const PATH_EXCLUDES = /\/(documents|raw)\/[a-z]+/
@@ -32,7 +32,7 @@ async function handleRequest(request) {
   let url = new URL(request.url);
 
   // Check if we have a non-Python extension.
-  let match = NON_PY_EXT.exec(url.pathname);
+  let match = ALLOWED_EXTS.exec(url.pathname);
 
   // Is the path one of our known API/raw endpoints?
   let path_exclude = PATH_EXCLUDES.exec(url.pathname);
