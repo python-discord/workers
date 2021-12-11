@@ -1,8 +1,11 @@
 name = "serve-robots"
 type = "javascript"
-workers_dev = true
+workers_dev = false
 compatibility_date = "2021-09-21"
 compatibility_flags = [ "formdata_parser_supports_files" ] # required
+account_id = "502aea548379e08369697540cc0bb0d1"
+zone_id = "989c984a358bfcd1e9b9d188cc86c1df"
+route = "*pythondiscord.com/robots.txt"
 
 [vars]
 WORKERS_RS_VERSION = "0.0.6"
