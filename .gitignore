@@ -1,0 +1,15 @@
+# General
+worker/
+*.log
+
+# Build output
+dist/
+build/
+
+# Javascript Workers
+node_modules/
+transpiled/
+
+# Rust workers
+target/
+**/*.rs.bk
