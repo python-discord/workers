@@ -20,7 +20,7 @@ const listener = hc(hcConfig, (event) => {
 
 addEventListener('fetch', listener)
 
-export async function handleRequest(request: Request): Promise<Response> {
+async function handleRequest(request: Request): Promise<Response> {
   // Don't apply any logic to non-POSTs.
   if (request.method !== 'POST') {
     return new Response(
@@ -142,7 +142,7 @@ async function sendLabelWebhook(
     } catch {
       return new Response(
         `Could not parse label webhook channel ${channel}. ` +
-          `Make sure it's of the format /:id/:token.`,
+        `Make sure it's of the format /:id/:token.`,
         { status: 400 },
       )
     }
