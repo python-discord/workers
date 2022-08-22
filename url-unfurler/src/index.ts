@@ -183,7 +183,7 @@ async function unfurl(
   return [depth, next, undefined]
 }
 
-export async function handleRequest(request: Request): Promise<Response> {
+async function handleRequest(request: Request): Promise<Response> {
   if (request.method !== 'POST') {
     return new Response('Ignoring non-POST request.')
   }
