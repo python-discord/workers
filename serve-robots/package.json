@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "deploy": "wrangler deploy",
-    "start": "wrangler dev"
+    "start": "wrangler dev",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230904.0",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2",
     "wrangler": "^3.6.0"
   }
