@@ -1,9 +1,9 @@
-import { Config, hc } from '@cloudflare/workers-honeycomb-logger';
+import { Config, wrapModule } from '@cloudflare/workers-honeycomb-logger';
 
 const hcConfig: Config = {
-  apiKey: HONEYCOMB_KEY,
   dataset: "worker-short-urls",
   sampleRates: {
+    '1xx': 1,
     '2xx': 1,
     '3xx': 1,
     '4xx': 1,
@@ -12,30 +12,32 @@ const hcConfig: Config = {
   }
 }
 
-const listener = hc(hcConfig, event => {
-  event.respondWith(handle(event.request));
-})
+interface Env {
+  urls: KVNamespace
+}
 
-addEventListener('fetch', listener)
+const worker = {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    let path = new URL(request.url).pathname.slice(1).replace(/\//, "");
 
-async function handle(request: Request) {
-  let path = new URL(request.url).pathname.slice(1).replace(/\//, "");
+    if (!path) {
+      request.tracer.log("No path, forwarding to host.")
+      return await request.tracer.fetch(request.url, request);
+    }
 
-  if (!path) {
-    request.tracer.log("No path, forwarding to host.")
-    return await request.tracer.fetch(request.url, request);
-  }
+    request.tracer.log("Fetching from KV")
+    let redirect = await env.urls.get(path);
 
-  request.tracer.log("Fetching from KV")
-  let redirect = await urls.get(path);
+    request.tracer.addData({ path: path })
 
-  request.tracer.addData({ path: path })
-
-  if (redirect) {
-    request.tracer.log(`Path found for ${path}, redirecting.`)
-    return Response.redirect(redirect, 302);
-  } else {
-    request.tracer.log(`No path found, forwarding to origin.`)
-    return await request.tracer.fetch(request.url, request);
+    if (redirect) {
+      request.tracer.log(`Path found for ${path}, redirecting.`)
+      return Response.redirect(redirect, 302);
+    } else {
+      request.tracer.log(`No path found, forwarding to origin.`)
+      return await request.tracer.fetch(request.url, request);
+    }
   }
 }
+
+export default wrapModule(hcConfig, worker)
