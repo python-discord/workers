@@ -4,12 +4,14 @@
   "description": "Find the root of an HTTP redirect chain.",
   "scripts": {
     "deploy": "wrangler deploy",
-    "start": "wrangler dev"
+    "start": "wrangler dev",
+    "format": "prettier --write ."
   },
   "author": "Hassan Abouelela",
   "license": "MIT",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230904.0",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2",
     "wrangler": "^3.6.0"
   },

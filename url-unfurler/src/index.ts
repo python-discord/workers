@@ -203,10 +203,13 @@ const worker = {
     }
 
     request.tracer.addData({ destination_url: new_url, actual_depth: depth })
-    return new Response(JSON.stringify({ destination: new_url, depth: depth }), {
-      headers: JSON_HEADERS,
-    })
-  }
+    return new Response(
+      JSON.stringify({ destination: new_url, depth: depth }),
+      {
+        headers: JSON_HEADERS,
+      },
+    )
+  },
 }
 
 export default wrapModule(hcConfig, worker)

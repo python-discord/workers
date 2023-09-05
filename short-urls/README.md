@@ -23,6 +23,7 @@ The following environment variables are required:
 ## Adding new URLs with wrangler
 
 Change directory to the root of this worker and run:
+
 ```
 $ npx wrangler kv:key put <key> <url> --binding urls
 ```
