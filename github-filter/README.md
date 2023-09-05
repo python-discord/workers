@@ -8,11 +8,11 @@ This tool is built at the moment only to handle Discord webhooks.
 
 ## Deployment
 
-Install local dependencies with `yarn`.
+Install local dependencies with `npm install`.
 
 Login to wrangler with `npx wrangler login`
 
-After you've authorised, you can make modifications to the worker and run `npx wrangler deploy` to deploy.
+After you've authorised, you can make modifications to the worker and run `npm run deploy` to deploy.
 
 ### Environment Variables
 
