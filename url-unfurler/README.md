@@ -6,11 +6,19 @@ This can be useful for finding out what's behind a shortened link, or any other 
 
 ## Deployment
 
-You need to install `wrangler` with `npm install -g @cloudflare/wrangler`.
+Install dependencies with `npm install`.
 
-Once you've installed this run `wrangler login`.
+Once you've installed this run `npx wrangler login`.
 
-After you've authorised, you can make modifications to the worker and run `wrangler publish` to push them to the edge.
+After you've authorised, you can make modifications to the worker and run `npm run deploy` to push them to the edge.
+
+### Environment Variables
+
+The following environment variables are required:
+
+| Key                 | Description                            |
+| ------------------- | -------------------------------------- |
+| `HONEYCOMB_API_KEY` | API Key for Honeycomb tracing platform |
 
 ## Usage
 
