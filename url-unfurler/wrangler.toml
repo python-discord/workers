@@ -1,10 +1,5 @@
 name = "url-unfurler"
-type = "webpack"
 account_id = "502aea548379e08369697540cc0bb0d1"
 workers_dev = true
-route = ""
-zone_id = ""
-webpack_config = "webpack.config.js"
-vars = {}
-kv_namespaces = []
-compatibility_date = "2021-11-08"
+compatibility_date = "2023-09-04"
+main = "src/index.ts"

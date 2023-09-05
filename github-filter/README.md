@@ -6,13 +6,21 @@ This is particularly useful when relaying embeds to Discord when the embed sizes
 
 This tool is built at the moment only to handle Discord webhooks.
 
-## Deployment
+## Deployment
 
-You need to install `wrangler` with `npm install -g @cloudflare/wrangler`.
+Install local dependencies with `npm install`.
 
-Once you've installed this run `wrangler login`.
+Login to wrangler with `npx wrangler login`
 
-After you've authorised, you can make modifications to the worker and run `wrangler publish` to push them to the edge.
+After you've authorised, you can make modifications to the worker and run `npm run deploy` to deploy.
+
+### Environment Variables
+
+The following environment variables are required:
+
+| Key                 | Description                            |
+| ------------------- | -------------------------------------- |
+| `HONEYCOMB_API_KEY` | API Key for Honeycomb tracing platform |
 
 ## Usage
 

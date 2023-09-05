@@ -1,19 +1,13 @@
 {
-  "name": "short-urls",
+  "name": "serve-robots",
   "version": "1.0.0",
-  "description": "Short URLs for Python Discord",
   "scripts": {
     "deploy": "wrangler deploy",
     "start": "wrangler dev"
   },
-  "author": "Joe Banks",
-  "license": "MIT",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230904.0",
     "typescript": "^5.2.2",
     "wrangler": "^3.6.0"
-  },
-  "dependencies": {
-    "@cloudflare/workers-honeycomb-logger": "^2.3.3"
   }
 }

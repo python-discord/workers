@@ -1,6 +1,0 @@
-name = "hastebin_py_redirector"
-type = "javascript"
-account_id = "502aea548379e08369697540cc0bb0d1"
-workers_dev = false
-route = "paste.pythondiscord.com/*"
-zone_id = "989c984a358bfcd1e9b9d188cc86c1df"

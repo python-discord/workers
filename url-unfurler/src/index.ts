@@ -1,15 +1,15 @@
-import { Config, hc } from '@cloudflare/workers-honeycomb-logger'
+import { Config, wrapModule } from '@cloudflare/workers-honeycomb-logger'
 
 const DEFAULT_MAX_REDIRECTS = 6
 
-const JSON_HEADERS: HeadersInit = {
+const JSON_HEADERS = {
   'Content-Type': 'application/json',
 }
 
 const hcConfig: Config = {
-  apiKey: HONEYCOMB_KEY,
   dataset: 'worker-url-unfurler',
   sampleRates: {
+    '1xx': 1,
     '2xx': 20,
     '3xx': 20,
     '4xx': 5,
@@ -17,12 +17,6 @@ const hcConfig: Config = {
     exception: 1,
   },
 }
-
-const listener = hc(hcConfig, (event: Event) => {
-  event.respondWith(handleRequest(event.request))
-})
-
-addEventListener('fetch', listener)
 
 /**
  * Try and get input from the request body.
@@ -183,32 +177,36 @@ async function unfurl(
   return [depth, next, undefined]
 }
 
-export async function handleRequest(request: Request): Promise<Response> {
-  if (request.method !== 'POST') {
-    return new Response('Ignoring non-POST request.')
-  }
+const worker = {
+  async fetch(request: Request, _env: unknown, _ctx: ExecutionContext) {
+    if (request.method !== 'POST') {
+      return new Response('Ignoring non-POST request.')
+    }
 
-  let url, max_depth
-  try {
-    ;[url, max_depth] = await parseInput(request)
+    let url, max_depth
+    try {
+      ;[url, max_depth] = await parseInput(request)
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 400,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 400,
+        headers: JSON_HEADERS,
+      })
+    }
+
+    request.tracer.addData({ original_url: url, max_depth: max_depth })
+
+    const [depth, new_url, response] = await unfurl(request, url, max_depth)
+    if (response !== undefined) {
+      return response
+    }
+
+    request.tracer.addData({ destination_url: new_url, actual_depth: depth })
+    return new Response(JSON.stringify({ destination: new_url, depth: depth }), {
       headers: JSON_HEADERS,
     })
   }
-
-  request.tracer.addData({ original_url: url, max_depth: max_depth })
-
-  const [depth, new_url, response] = await unfurl(request, url, max_depth)
-  if (response !== undefined) {
-    return response
-  }
-
-  request.tracer.addData({ destination_url: new_url, actual_depth: depth })
-  return new Response(JSON.stringify({ destination: new_url, depth: depth }), {
-    headers: JSON_HEADERS,
-  })
 }
+
+export default wrapModule(hcConfig, worker)

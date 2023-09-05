@@ -1,7 +1,0 @@
-name = "hastebin-filter"
-type = "javascript"
-
-route = "paste.pythondiscord.com/documents"
-account_id = "502aea548379e08369697540cc0bb0d1"
-zone_id = "989c984a358bfcd1e9b9d188cc86c1df"
-compatibility_date = "2021-10-12"

@@ -12,9 +12,17 @@ Once you've installed this run `wrangler login`.
 
 After you've authorised, you can make modifications to the worker and run `wrangler publish` to push them to the edge.
 
+### Environment Variables
+
+The following environment variables are required:
+
+| Key                 | Description                            |
+| ------------------- | -------------------------------------- |
+| `HONEYCOMB_API_KEY` | API Key for Honeycomb tracing platform |
+
 ## Adding new URLs with wrangler
 
 Change directory to the root of this worker and run:
 ```
-$ wrangler kv:key put <key> <url> --binding urls
+$ npx wrangler kv:key put <key> <url> --binding urls
 ```
