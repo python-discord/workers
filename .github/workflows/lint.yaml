@@ -1,0 +1,19 @@
+name: Lint Workers
+
+on:
+    pull_request:
+        branches:
+        - main
+    push:
+        branches:
+            - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies for all sub-workers
+        run: find . -mindepth 1 -maxdepth 1 -type d -not -path '*/.*' -exec sh -c 'cd {} && npm install' \;
+      - name: Run lint task for all workers
+        run: xargs -n1 -r0a <(find . -mindepth 1 -maxdepth 1 -type d -not -path '*/.*' -print0) sh -c 'for file do cd $file && npm run lint && cd ..; done;' sh

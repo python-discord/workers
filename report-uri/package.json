@@ -5,7 +5,8 @@
   "scripts": {
     "deploy": "wrangler deploy",
     "start": "wrangler dev",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint": "prettier --check ."
   },
   "author": "Joe Banks",
   "license": "MIT",
