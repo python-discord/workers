@@ -1,6 +1,27 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/github-filter"
     schedule:
       interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/report-uri"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/serve-robots"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/short-urls"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/url-unfurler"
+    schedule:
+      interval: "daily"
+groups:
+  production-dependencies:
+    dependency-type: "production"
+  development-dependencies:
+    dependency-type: "development"
