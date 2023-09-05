@@ -2,7 +2,6 @@
   "name": "short-urls",
   "version": "1.0.0",
   "description": "Short URLs for Python Discord",
-  "main": "index.js",
   "scripts": {
     "deploy": "wrangler deploy",
     "start": "wrangler dev"
