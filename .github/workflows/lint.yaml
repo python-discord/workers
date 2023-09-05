@@ -1,18 +1,14 @@
 name: Lint Workers
 
 on:
-    pull_request:
-        branches:
-        - main
-    push:
-        branches:
-            - main
+  workflow_call:
 
 jobs:
   lint:
+    name: Lint code
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install dependencies for all sub-workers
         run: find . -mindepth 1 -maxdepth 1 -type d -not -path '*/.*' -exec sh -c 'cd {} && npm install' \;
       - name: Run lint task for all workers
