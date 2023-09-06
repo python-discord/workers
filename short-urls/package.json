@@ -14,7 +14,7 @@
     "@cloudflare/workers-types": "^4.20230904.0",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2",
-    "wrangler": "^3.6.0"
+    "wrangler": "^3.7.0"
   },
   "dependencies": {
     "@cloudflare/workers-honeycomb-logger": "^2.3.3"
