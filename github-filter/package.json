@@ -11,10 +11,10 @@
   "author": "jb3",
   "license": "MIT",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230904.0",
+    "@cloudflare/workers-types": "^4.20230914.0",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2",
-    "wrangler": "^3.7.0"
+    "wrangler": "^3.8.0"
   },
   "dependencies": {
     "@cloudflare/workers-honeycomb-logger": "^2.3.3"
