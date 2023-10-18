@@ -138,7 +138,13 @@ async function sendWebhook(id: string, token: string, data: Data) {
   });
 
   // Pass on data to Discord as usual
-  return await fetch(template, new_request);
+  const response = await fetch(template, new_request);
+  if (!response.ok) {
+    return new Response(response.json(), {
+      status: response.status,
+    });
+  }
+  return response;
 }
 
 export default wrapModule(hcConfig, worker);
