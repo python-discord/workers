@@ -14,7 +14,7 @@ const hcConfig: Config = {
 };
 
 interface Env {
-  LABELS: KVNamespace;
+  labels: KVNamespace;
 }
 
 const worker = {
@@ -78,7 +78,7 @@ const worker = {
 
       // Send data to any extra label webhooks
       let extraChannels = (json.issue || json.pull_request)?.labels?.map(async (label: { [key: string]: string }) => {
-        let result = await sendLabelWebhook(label.name, data, env.LABELS);
+        let result = await sendLabelWebhook(label.name, data, env.labels);
 
         if (result) {
           return result;
@@ -140,7 +140,7 @@ async function sendWebhook(id: string, token: string, data: Data) {
   // Pass on data to Discord as usual
   const response = await fetch(template, new_request);
   if (!response.ok) {
-    return new Response(response.json(), {
+    return new Response(await response.json(), {
       status: response.status,
     });
   }
