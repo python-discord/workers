@@ -140,7 +140,7 @@ async function sendWebhook(id: string, token: string, data: Data) {
   // Pass on data to Discord as usual
   const response = await fetch(template, new_request);
   if (!response.ok) {
-    return new Response(response.json(), {
+    return new Response(await response.json(), {
       status: response.status,
     });
   }
