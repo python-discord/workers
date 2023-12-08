@@ -128,23 +128,8 @@ async function sendLabelWebhook(label: string, data: Data, labelNamespace: KVNam
 }
 
 async function sendWebhook(id: string, token: string, data: Data) {
-  // Format for a webhook
-  let template = `https://discord.com/api/webhooks/${id}/${token}/github?wait=1`;
-
-  let new_request = new Request(template, {
-    body: data.body,
-    headers: data.headers,
-    method: data.method,
-  });
-
   // Pass on data to Discord as usual
-  const response = await fetch(template, new_request);
-  if (!response.ok) {
-    return new Response(await response.json(), {
-      status: response.status,
-    });
-  }
-  return response;
+  return await fetch(`https://discord.com/api/webhooks/${id}/${token}/github?wait=1`, data);
 }
 
 export default wrapModule(hcConfig, worker);
