@@ -66,13 +66,13 @@ const worker = {
       if (url.pathname === "/") {
         return new Response("Make sure to specify webhook components like /:id/:token", { status: 400 });
       }
-      
-      const githubIp  = request.headers.get('CF-Connecting-IP');
-      
-      let headers = {...request.headers};
+
+      const githubIp = request.headers.get("CF-Connecting-IP");
+
+      let headers = { ...request.headers };
 
       if (githubIp) {
-        headers = {...headers, 'X-Forwarded-For': githubIp};
+        headers = { ...headers, "X-Forwarded-For": githubIp };
       }
 
       const data: Data = {
