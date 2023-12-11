@@ -1,8 +1,0 @@
-name = "github-filter-worker"
-main = "src/index.ts"
-compatibility_date = "2023-09-04"
-account_id = "502aea548379e08369697540cc0bb0d1"
-workers_dev = true
-kv_namespaces = [
-    { binding = "labels", id = "37d66bb1cfc3401ab0528ad15ab2bbe6" },
-]
