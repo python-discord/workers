@@ -1,15 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/github-filter"
-    schedule:
-      interval: "daily"
-    groups:
-      production-dependencies:
-        dependency-type: "production"
-      development-dependencies:
-        dependency-type: "development"
-  - package-ecosystem: "npm"
     directory: "/report-uri"
     schedule:
       interval: "daily"
