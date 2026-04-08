@@ -1,0 +1,11 @@
+name = "error-pages"
+main = "src/worker.ts"
+account_id = "502aea548379e08369697540cc0bb0d1"
+compatibility_date = "2023-09-04"
+routes = [
+    { pattern = "error-pages.pythondiscord.com", custom_domain = true },
+]
+kv_namespaces = [
+    { binding = "error_pages", id = "2e866c2204e54963a936f1a2554815e6" },
+]
+workers_dev = false

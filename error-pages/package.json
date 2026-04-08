@@ -1,0 +1,16 @@
+{
+  "name": "error-pages",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "start": "wrangler dev",
+    "format": "prettier --write .",
+    "lint": "prettier --check ."
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260408.1",
+    "prettier": "^3.2.5",
+    "typescript": "^6.0.2",
+    "wrangler": "^4.81.0"
+  }
+}
