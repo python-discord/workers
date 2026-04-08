@@ -13,3 +13,6 @@ transpiled/
 # Rust workers
 target/
 **/*.rs.bk
+
+# wrangler
+.wrangler/
