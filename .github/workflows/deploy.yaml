@@ -10,7 +10,7 @@ jobs:
     environment: production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install dependencies for all sub-workers
         run: find . -mindepth 1 -maxdepth 1 -type d -not -path '*/.*' -exec sh -c 'cd {} && npm install' \;
