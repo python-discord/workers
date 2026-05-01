@@ -1,5 +1,7 @@
 import { Config, wrapModule } from "@cloudflare/workers-honeycomb-logger";
 
+const REDIRECT_BASE = "https://pythondiscord.com";
+
 const hcConfig: Config = {
   dataset: "worker-short-urls",
   sampleRates: {
@@ -22,7 +24,9 @@ const worker = {
 
     if (!path) {
       request.tracer.log("No path, forwarding to host.");
-      return await request.tracer.fetch(request.url, request);
+      const targetUrl = new URL(REDIRECT_BASE);
+      targetUrl.search = new URL(request.url).search;
+      return Response.redirect(targetUrl.toString(), 302);
     }
 
     request.tracer.log("Fetching from KV");
@@ -34,8 +38,11 @@ const worker = {
       request.tracer.log(`Path found for ${path}, redirecting.`);
       return Response.redirect(redirect, 302);
     } else {
-      request.tracer.log(`No path found, forwarding to origin.`);
-      return await request.tracer.fetch(request.url, request);
+      request.tracer.log(`No path found, redirecting to redirect base.`);
+      const targetUrl = new URL(REDIRECT_BASE);
+      targetUrl.pathname = path;
+      targetUrl.search = new URL(request.url).search;
+      return Response.redirect(targetUrl.toString(), 302);
     }
   },
 };
