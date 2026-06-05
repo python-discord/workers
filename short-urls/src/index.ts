@@ -20,7 +20,7 @@ interface Env {
 
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    let path = new URL(request.url).pathname.slice(1).replace(/\//, "");
+    let path = new URL(request.url).pathname.slice(1).replace(/\/$/, "");
 
     if (!path) {
       request.tracer.log("No path, forwarding to host.");
