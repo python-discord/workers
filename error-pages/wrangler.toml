@@ -6,6 +6,6 @@ routes = [
     { pattern = "error-pages.pythondiscord.com", custom_domain = true },
 ]
 kv_namespaces = [
-    { binding = "error-pages", id = "2e866c2204e54963a936f1a2554815e6" },
+    { binding = "error_pages", id = "2e866c2204e54963a936f1a2554815e6" },
 ]
 workers_dev = false

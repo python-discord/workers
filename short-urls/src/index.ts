@@ -3,7 +3,7 @@ import { Config, wrapModule } from "@cloudflare/workers-honeycomb-logger";
 const REDIRECT_BASE = "https://pythondiscord.com";
 
 const hcConfig: Config = {
-  dataset: "worker-short-urls",
+  dataset: "worker-short_urls",
   sampleRates: {
     "1xx": 1,
     "2xx": 1,
@@ -15,7 +15,7 @@ const hcConfig: Config = {
 };
 
 interface Env {
-  urls: KVNamespace;
+  short_urls: KVNamespace;
 }
 
 const worker = {
@@ -30,7 +30,7 @@ const worker = {
     }
 
     request.tracer.log("Fetching from KV");
-    let redirect = await env.urls.get(path);
+    let redirect = await env.short_urls.get(path);
 
     request.tracer.addData({ path: path });
 

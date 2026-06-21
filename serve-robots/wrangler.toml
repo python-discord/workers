@@ -6,6 +6,6 @@ routes = [
     { pattern = "*pythondiscord.com/robots.txt", zone_id = "989c984a358bfcd1e9b9d188cc86c1df" },
 ]
 kv_namespaces = [
-    { binding = "serve-robots", id = "f37779daf76a4cafbed199b8746dfe69" },
+    { binding = "serve_robots", id = "f37779daf76a4cafbed199b8746dfe69" },
 ]
 workers_dev = false
