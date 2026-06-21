@@ -7,6 +7,6 @@ routes = [
     "www.pythondiscord.com/robots.txt",
 ]
 kv_namespaces = [
-    { binding = "robots_files", id = "f37779daf76a4cafbed199b8746dfe69" },
+    { binding = "serve-robots", id = "f37779daf76a4cafbed199b8746dfe69" },
 ]
 workers_dev = false
