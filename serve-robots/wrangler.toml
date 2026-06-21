@@ -4,7 +4,6 @@ account_id = "502aea548379e08369697540cc0bb0d1"
 compatibility_date = "2023-09-04"
 routes = [
     { pattern = "*pythondiscord.com/robots.txt", zone_id = "989c984a358bfcd1e9b9d188cc86c1df" },
-    "www.pythondiscord.com/robots.txt",
 ]
 kv_namespaces = [
     { binding = "serve-robots", id = "f37779daf76a4cafbed199b8746dfe69" },
