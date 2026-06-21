@@ -1,5 +1,0 @@
-name = "url-unfurler"
-account_id = "502aea548379e08369697540cc0bb0d1"
-workers_dev = true
-compatibility_date = "2023-09-04"
-main = "src/index.ts"

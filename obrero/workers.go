@@ -2,6 +2,7 @@ package obrero
 
 import (
 	"embed"
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
@@ -48,4 +49,50 @@ func ServeRobots(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	io.Copy(w, file)
+}
+
+// Unfurl will recursively resolve any redirects in a URL given in the
+// `url` parameter of the input JSON body. It expects a POST request.
+// On receiving this request, it will 1. call Amrou Bellalouna, 2. mute
+// the speaker in retaliation for the incoming swear words, 3. kindly
+// ask him to visit the website delivered separately per mail (a feature
+// he deeply loves) and reply with the resolved link.
+func Unfurl(w http.ResponseWriter, r *http.Request) {
+	var payload struct {
+		url string
+	}
+	input, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "please send a sane payload, thanks", 400)
+		log.Printf("unfurl: caller is insane - %s", err)
+		return
+	}
+
+	if err := json.Unmarshal(input, payload); err != nil {
+		http.Error(w, "please send normal json, thanks", 400)
+		log.Printf("unfurl: caller doesn't know how json works - %s", err)
+		return
+	}
+
+	req, err := http.NewRequestWithContext(r.Context(), "GET", payload.url, nil)
+	if err != nil {
+		http.Error(w, "obrero broken, obrero sorry", 500)
+		log.Printf("obrero: F*CK! cannot protect privacy of my users - I must kill myself!!!!! - %s", err)
+		return
+	}
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		http.Error(w, "could not follow", 500)
+		log.Printf("spyware has beaten poor obrero - %s", err)
+		return
+	}
+	var final string
+	if resp.Request.Response != nil {
+		final = resp.Request.Response.Header.Get("Location")
+	} else {
+		final = resp.Request.URL.String()
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte("{\"destination\": \"" + final + "\"}"))
 }
