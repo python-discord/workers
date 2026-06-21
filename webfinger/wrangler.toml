@@ -1,0 +1,5 @@
+name = "webfinger"
+account_id = "502aea548379e08369697540cc0bb0d1"
+main = "src/index.ts"
+compatibility_date = "2024-09-13"
+routes = [{ pattern = "pydis.wtf/.well-known/webfinger*", zone_name = "pydis.wtf" }]
