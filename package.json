@@ -1,0 +1,26 @@
+{
+  "name": "workers",
+  "private": true,
+  "workspaces": [
+    "error-pages",
+    "report-uri",
+    "serve-robots",
+    "short-urls",
+    "url-unfurler"
+  ],
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "prettier --check .",
+    "deploy:error-pages": "npm run deploy -w error-pages",
+    "deploy:report-uri": "npm run deploy -w report-uri",
+    "deploy:serve-robots": "npm run deploy -w serve-robots",
+    "deploy:short-urls": "npm run deploy -w short-urls",
+    "deploy:url-unfurler": "npm run deploy -w url-unfurler"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260408.1",
+    "prettier": "^3.2.5",
+    "typescript": "^6.0.2",
+    "wrangler": "^4.81.0"
+  }
+}
