@@ -18,5 +18,5 @@ jobs:
       - name: Deploy workers to Cloudflare Edge
         run: xargs -n1 -r0a <(find . -mindepth 1 -maxdepth 1 -type d -not -path '*/.*' -print0) sh -c 'for file do cd $file && npm run deploy && cd ..; done;' sh
         env:
-            CLOUDFLARE_ACCOUNT_ID: 502aea548379e08369697540cc0bb0d1
-            CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 502aea548379e08369697540cc0bb0d1
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
