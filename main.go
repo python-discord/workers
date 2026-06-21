@@ -14,7 +14,8 @@ func main() {
 		log.SetFlags(0)
 	}
 	mux := http.NewServeMux()
-	mux.HandleFunc("csp.pythondiscord.com", obrero.ReportURI)
+	mux.HandleFunc("csp.pythondiscord.com/", obrero.ReportURI)
+	mux.HandleFunc("GET /robots.txt", obrero.ServeRobots)
 	server := obrero.LoggingHttpHandler(mux)
 	http.ListenAndServe("localhost:8500", server)
 }

@@ -14,5 +14,8 @@ transpiled/
 target/
 **/*.rs.bk
 
+# Spitzensparken Blinkelitzelchen
+main
+
 # wrangler
 .wrangler/

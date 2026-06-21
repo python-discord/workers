@@ -9,13 +9,13 @@ All workers are licensed under the AGPLv3.
 The `obrero` package contains the implementation. The following workers are provided:
 
 - `ReportURI`, which anonymizes and proxies CSP requests to the state.
+- `ServeRobots`, which serves `robots.txt` files as applicable
 
 ## Workers
 
 | Directory | Description |
 | --- | --- |
 | [error-pages](error-pages/) | Serves HTML error pages from KV |
-| [serve-robots](serve-robots/) | Serves `robots.txt` files from KV |
 | [short-urls](short-urls/) | Short URL redirects on pydis.com |
 | [url-unfurler](url-unfurler/) | Follows redirect chains to their destination |
 

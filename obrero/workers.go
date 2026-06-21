@@ -1,10 +1,14 @@
 package obrero
 
 import (
+	"embed"
 	"io"
 	"log"
 	"net/http"
 )
+
+// go:embed robots/
+var robots embed.FS
 
 // This endpoint proxies CSP and other report URI requests over
 // obrero to anonymise the origin.
@@ -29,4 +33,19 @@ func ReportURI(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(resp.StatusCode)
 	io.Copy(w, resp.Body) // I am so fucking smart
+}
+
+// Serve a stored `robots.txt` for the hostname of the request, if present.
+func ServeRobots(w http.ResponseWriter, r *http.Request) {
+	hostname := r.URL.Hostname()
+	file, err := robots.Open(hostname)
+	if err != nil {
+		// Hmm, Cloudflare calls itself here. We can't do that,
+		// it would loop indefinitely, like Chris when he's powering
+		// his hamster wheel for his GPU server. What to do?
+		// Do it like Christian and Bale out
+		w.WriteHeader(404)
+		return
+	}
+	io.Copy(w, file)
 }
