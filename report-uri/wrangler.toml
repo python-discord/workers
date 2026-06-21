@@ -1,5 +1,0 @@
-name = "report-uri"
-main = "src/index.ts"
-compatibility_date = "2023-09-04"
-account_id = "502aea548379e08369697540cc0bb0d1"
-routes = [{ pattern = "csp.pythondiscord.com", custom_domain = true }]

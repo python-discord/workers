@@ -1,28 +1,25 @@
-# 👷 Workers
-Cloudflare Workers in use at Python Discord.
+# obrero
 
-All workers are licensed under MIT.
+Python Discord's trusty unpaid employee.
+
+All workers are licensed under the AGPLv3.
 
 ## Structure
 
-This is a monorepo managed with npm workspaces. Each worker lives in its own subdirectory with its own `wrangler.toml`. Dependencies are installed from the root.
+The `obrero` package contains the implementation. The following workers are provided:
 
-To deploy a specific worker:
-
-```
-npm run deploy:<worker>
-```
+- `ReportURI`, which anonymizes and proxies CSP requests to the state.
 
 ## Workers
 
 | Directory | Description |
 | --- | --- |
 | [error-pages](error-pages/) | Serves HTML error pages from KV |
-| [report-uri](report-uri/) | Proxies CSP report URI requests |
 | [serve-robots](serve-robots/) | Serves `robots.txt` files from KV |
 | [short-urls](short-urls/) | Short URL redirects on pydis.com |
 | [url-unfurler](url-unfurler/) | Follows redirect chains to their destination |
 
 ## Deployment
 
-Workers are linted on pull requests and deployed to Cloudflare automatically on merge.
+`obrero`, when provided with a sixpack of Desparados and the prospect of an
+unpaid vacation day, is moved to Python Discord's Debian server via Ansible.
