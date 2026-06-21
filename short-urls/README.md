@@ -4,13 +4,15 @@ This worker handles short URls redirection on pydis.com (for example, https://py
 
 URLs are stored in Workers KV and can be added in the Cloudflare Dashboard or through the Wrangler CLI.
 
-## Publishing
+## Deployment
 
-You need to install `wrangler` with `npm install -g @cloudflare/wrangler`.
+From the repo root, run `npm install` to install dependencies.
 
-Once you've installed this run `wrangler login`.
+Login with `npx wrangler login`, then deploy with:
 
-After you've authorised, you can make modifications to the worker and run `wrangler publish` to push them to the edge.
+```
+npm run deploy -w short-urls
+```
 
 ### Environment Variables
 

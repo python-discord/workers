@@ -4,11 +4,13 @@ This worker serves HTML error pages from Cloudflare KV based on the request path
 
 ## Deployment
 
-Install local dependencies with `npm install`.
+From the repo root, run `npm install` to install dependencies.
 
-Login to wrangler with `npx wrangler login`.
+Login with `npx wrangler login`, then deploy with:
 
-After you've authorised, you can make modifications to the worker and run `npm run deploy` to deploy.
+```
+npm run deploy -w error-pages
+```
 
 ## Usage
 

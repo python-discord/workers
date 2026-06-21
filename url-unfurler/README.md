@@ -6,11 +6,13 @@ This can be useful for finding out what's behind a shortened link, or any other 
 
 ## Deployment
 
-Install dependencies with `npm install`.
+From the repo root, run `npm install` to install dependencies.
 
-Once you've installed this run `npx wrangler login`.
+Login with `npx wrangler login`, then deploy with:
 
-After you've authorised, you can make modifications to the worker and run `npm run deploy` to push them to the edge.
+```
+npm run deploy -w url-unfurler
+```
 
 ### Environment Variables
 
