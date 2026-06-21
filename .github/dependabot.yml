@@ -1,24 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/report-uri"
-    schedule:
-      interval: "daily"
-    groups:
-      production-dependencies:
-        dependency-type: "production"
-      development-dependencies:
-        dependency-type: "development"
-  - package-ecosystem: "npm"
-    directory: "/serve-robots"
-    schedule:
-      interval: "daily"
-    groups:
-      production-dependencies:
-        dependency-type: "production"
-      development-dependencies:
-        dependency-type: "development"
-  - package-ecosystem: "npm"
     directory: "/short-urls"
     schedule:
       interval: "daily"
@@ -28,7 +10,7 @@ updates:
       development-dependencies:
         dependency-type: "development"
   - package-ecosystem: "npm"
-    directory: "/url-unfurler"
+    directory: "/webfinger"
     schedule:
       interval: "daily"
     groups:

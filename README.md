@@ -16,13 +16,10 @@ npm run deploy:<worker>
 
 ## Workers
 
-| Directory                     | Description                                  |
-| ----------------------------- | -------------------------------------------- |
-| [error-pages](error-pages/)   | Serves HTML error pages from KV              |
-| [report-uri](report-uri/)     | Proxies CSP report URI requests              |
-| [serve-robots](serve-robots/) | Serves `robots.txt` files from KV            |
-| [short-urls](short-urls/)     | Short URL redirects on pydis.com             |
-| [url-unfurler](url-unfurler/) | Follows redirect chains to their destination |
+| Directory                 | Description                      |
+| ------------------------- | -------------------------------- |
+| [short-urls](short-urls/) | Short URL redirects on pydis.com |
+| [webfinger](webfinger/)   | WebFinger endpoint for pydis.wtf |
 
 ## Deployment
 
